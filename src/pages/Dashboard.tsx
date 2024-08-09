@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import DashboardContainer from "../components/dashboard/container";
+import DashboardContainer from "../components/dashboard/Container";
 
 function Dashboard() {
   return (

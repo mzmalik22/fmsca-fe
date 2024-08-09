@@ -1,35 +1,38 @@
 import { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
-import { DataItem, getData, initialRows, saveData } from "../../services/db";
 
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import useDraggableColumns from "./useDraggableColumns";
+import RecordService, { initialRows } from "../../services/db/Records";
+import { DataItem } from "../../services/db";
 
 export default function DashboardContainer() {
-  const [rows, setRows] = useState<DataItem[]>([]);
+  const [rows, setRows] = useState<DataItem[]>(initialRows);
+  const [isLoading, setLoading] = useState(false);
 
   const { columns, handleResize } = useDraggableColumns();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getData();
-      setRows(data);
-    };
-    fetchData();
-  }, []);
+  const fetcher = () => {
+    setLoading(true);
+    RecordService.getAll()
+      .then((data) => {
+        if (data.length) setRows(data);
+        else {
+          RecordService.bulkSave(initialRows);
+          setRows(initialRows);
+        }
+      })
+      .finally(() => setLoading(false));
+  };
 
-  useEffect(() => {
-    if (rows.length > 0) saveData(rows);
-  }, [rows]);
+  useEffect(() => fetcher(), []);
 
   const processRowUpdate = (newRow: DataItem, oldRow: DataItem) => {
     const updatedRow = { ...oldRow, ...newRow };
 
-    setRows((prev) =>
-      prev.map((row) => (row.id === oldRow.id ? updatedRow : row))
-    );
+    RecordService.saveOne(updatedRow);
 
     return updatedRow;
   };
@@ -41,14 +44,18 @@ export default function DashboardContainer() {
   return (
     <Box sx={{ height: 600, width: "100%" }}>
       <DndProvider backend={HTML5Backend}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          pagination
-          processRowUpdate={processRowUpdate}
-          onProcessRowUpdateError={handleProcessRowUpdateError}
-          onColumnResize={handleResize}
-        />
+        {isLoading ? (
+          <>Loading...</>
+        ) : (
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            pagination
+            processRowUpdate={processRowUpdate}
+            onProcessRowUpdateError={handleProcessRowUpdateError}
+            onColumnResize={handleResize}
+          />
+        )}
       </DndProvider>
     </Box>
   );
