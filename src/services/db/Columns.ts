@@ -1,12 +1,17 @@
 import { GridColDef } from "@mui/x-data-grid";
 import DB, { DataItem, STORES } from ".";
 
+export type ExtendedCol = GridColDef<DataItem> & {
+  visible: boolean;
+};
+
 export const initialColumns = [
   {
     field: "id",
     headerName: "ID",
     editable: false,
     width: 200,
+    visible: true,
   },
   {
     field: "created_dt",
@@ -15,20 +20,23 @@ export const initialColumns = [
     editable: true,
     width: 200,
     valueGetter: (value) => new Date(value),
+    visible: true,
   },
   {
     field: "legal_name",
     headerName: "Legal Name",
     editable: true,
     width: 200,
+    visible: true,
   },
   {
     field: "entity_type",
     headerName: "Entity Type",
     editable: true,
     width: 150,
+    visible: true,
   },
-] satisfies GridColDef<DataItem>[];
+] satisfies ExtendedCol[];
 
 class ColumnService {
   public static async getAll() {
@@ -36,31 +44,36 @@ class ColumnService {
     const tx = db.transaction(STORES.COLUMNS, "readonly");
     const store = tx.objectStore(STORES.COLUMNS);
     const data = await store.getAll();
-
-    console.log("Getting Columns", data);
     return data ?? [];
   }
 
-  public static async bulkSave(data: GridColDef<DataItem>[]) {
-    console.log("Saving Columns", data);
+  public static async bulkSave(data: ExtendedCol[]) {
     const db = await DB.initDB();
     const tx = db.transaction(STORES.COLUMNS, "readwrite");
     const store = tx.objectStore(STORES.COLUMNS);
 
     data.forEach(async (item, i) => {
-      await store.put({ field: item.field, width: item.width, order: i });
+      await store.put({
+        field: item.field,
+        width: item.width,
+        order: i,
+        visible: item.visible,
+      });
     });
 
     await tx.done;
   }
 
-  public static async updateColWidth(field: string, width: number) {
+  public static async updateCol(
+    field: string,
+    { width, visible = true }: { width?: number; visible?: boolean }
+  ) {
     const db = await DB.initDB();
     const tx = db.transaction(STORES.COLUMNS, "readwrite");
     const store = tx.objectStore(STORES.COLUMNS);
 
     const item = await store.get(field);
-    if (item) await store.put({ ...item, width });
+    if (item) await store.put({ ...item, width, visible });
 
     await tx.done;
   }

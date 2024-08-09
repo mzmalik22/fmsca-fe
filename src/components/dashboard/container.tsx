@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 
 import { DndProvider } from "react-dnd";
@@ -12,7 +12,12 @@ export default function DashboardContainer() {
   const [rows, setRows] = useState<DataItem[]>(initialRows);
   const [isLoading, setLoading] = useState(false);
 
-  const { columns, handleResize } = useDraggableColumns();
+  const {
+    columns,
+    columnVisibilityModel,
+    handleResize,
+    handleColumnVisibilityModelChange,
+  } = useDraggableColumns();
 
   const fetcher = () => {
     setLoading(true);
@@ -51,9 +56,12 @@ export default function DashboardContainer() {
             rows={rows}
             columns={columns}
             pagination
+            slots={{ toolbar: GridToolbar }}
+            columnVisibilityModel={columnVisibilityModel}
             processRowUpdate={processRowUpdate}
             onProcessRowUpdateError={handleProcessRowUpdateError}
             onColumnResize={handleResize}
+            onColumnVisibilityModelChange={handleColumnVisibilityModelChange}
           />
         )}
       </DndProvider>

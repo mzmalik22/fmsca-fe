@@ -1,17 +1,19 @@
-import { GridColDef } from "@mui/x-data-grid";
-import { useCallback, useEffect, useState } from "react";
+import { GridColDef, GridColumnVisibilityModel } from "@mui/x-data-grid";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import update from "immutability-helper";
 
 import { DataItem } from "../../services/db";
 import DroppableColumn from "./DroppableColumn";
 import DraggableColumn from "./DragableColumn";
-import ColumnService, { initialColumns } from "../../services/db/Columns";
+import ColumnService, {
+  ExtendedCol,
+  initialColumns,
+} from "../../services/db/Columns";
 
 import _ from "lodash";
 
 function useDraggableColumns() {
-  const [columns, setColumns] =
-    useState<GridColDef<DataItem>[]>(initialColumns);
+  const [columns, setColumns] = useState<ExtendedCol[]>(initialColumns);
   const [dragIndex, setDragIndex] = useState(-1);
 
   const fetcher = () => {
@@ -24,7 +26,7 @@ function useDraggableColumns() {
   };
 
   function formatColumns(
-    rawCols: { field: string; width: number; order: number }[]
+    rawCols: { field: string; width: number; order: number; visible: boolean }[]
   ) {
     setColumns(
       rawCols
@@ -82,22 +84,49 @@ function useDraggableColumns() {
     colDef: GridColDef<DataItem>;
     width: number;
   }) {
-    ColumnService.updateColWidth(colDef.field, width);
+    ColumnService.updateCol(colDef.field, { width });
 
     setColumns((prev) =>
       prev.map((col) => (col.field === colDef.field ? { ...col, width } : col))
     );
   }
 
-  function handleReset() {
+  function handleColumnVisibilityModelChange(model: GridColumnVisibilityModel) {
+    setColumns((prev) => {
+      const updated = prev.map((item) => ({
+        ...item,
+        visible: model[item.field] ?? true,
+      }));
+
+      ColumnService.bulkSave(updated);
+
+      return updated;
+    });
+  }
+
+  function reset() {
     setColumns(initialColumns);
     ColumnService.bulkSave(initialColumns);
   }
 
+  const columnVisibilityModel = useMemo(
+    () =>
+      columns
+        .filter((col) => !col.visible)
+        .reduce((prev, col) => {
+          const x = prev;
+          x[col.field] = col.visible;
+          return x;
+        }, {} as GridColumnVisibilityModel),
+    [columns]
+  );
+
   return {
     columns: columnsWithDraggableHeaders,
-    reset: handleReset,
+    columnVisibilityModel,
+    reset,
     handleResize,
+    handleColumnVisibilityModelChange,
   };
 }
 
