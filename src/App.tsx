@@ -3,10 +3,10 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
-import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
-  return <Home />;
+  return <Dashboard />;
 }
 
 export default App;
