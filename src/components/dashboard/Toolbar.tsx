@@ -16,15 +16,45 @@ type ToolbarProps = {
 function Toolbar(_: ToolbarProps) {
   return (
     <GridToolbarContainer>
-      <Box sx={{ color: (theme) => theme.palette.primary.main }}>
-        <h2 style={{ paddingInlineStart: 10 }}>FMCSA Records</h2>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          justifyContent: "center",
+          width: "100%",
+          padding: "10px 0",
+        }}
+      >
+        <Box
+          sx={{
+            color: (theme) => theme.palette.primary.main,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+            padding: "0 10px",
+          }}
+        >
+          <h2>FMCSA Records</h2>
+          <GridToolbarQuickFilter variant="outlined" size="small" />
+        </Box>
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            gap: 2.5,
+            padding: "0 10px",
+          }}
+        >
+          <GridToolbarColumnsButton />
+          <GridToolbarFilterButton />
+          <GridToolbarExport />
+          <ShareMenu />
+        </Box>
       </Box>
-      <Box sx={{ flex: 1 }}></Box>
-      <GridToolbarColumnsButton />
-      <GridToolbarFilterButton />
-      <GridToolbarExport />
-      <ShareMenu />
-      <GridToolbarQuickFilter variant="outlined" size="small" />
     </GridToolbarContainer>
   );
 }

@@ -34,11 +34,4 @@ class RecordService {
   }
 }
 
-export const initialRows = Array.from(new Array(100000)).map((_, i) => ({
-  id: i,
-  created_dt: new Date(i + 1000).toString(),
-  entity_type: i % 2 ? "CARRIER" : "BROKER",
-  legal_name: `C ${i + 1}`,
-})) satisfies DataItem[];
-
 export default RecordService;
