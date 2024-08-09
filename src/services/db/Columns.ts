@@ -5,6 +5,13 @@ export type ExtendedCol = GridColDef<DataItem> & {
   visible: boolean;
 };
 
+export type RawCol = {
+  field: string;
+  width: number;
+  order: number;
+  visible: boolean;
+};
+
 export const initialColumns = [
   {
     field: "id",
@@ -45,6 +52,26 @@ class ColumnService {
     const store = tx.objectStore(STORES.COLUMNS);
     const data = await store.getAll();
     return data ?? [];
+  }
+
+  public static async removeAllAndSave(data: RawCol[]) {
+    const db = await DB.initDB();
+    const tx = db.transaction(STORES.COLUMNS, "readwrite");
+    const store = tx.objectStore(STORES.COLUMNS);
+
+    store.clear();
+    data
+      .sort((a, b) => a.order - b.order)
+      .forEach(async (item, i) => {
+        await store.put({
+          field: item.field,
+          width: item.width,
+          order: i,
+          visible: item.visible,
+        });
+      });
+
+    await tx.done;
   }
 
   public static async bulkSave(data: ExtendedCol[]) {

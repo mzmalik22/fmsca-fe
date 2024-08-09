@@ -1,5 +1,5 @@
 import { GridColDef, GridColumnVisibilityModel } from "@mui/x-data-grid";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import update from "immutability-helper";
 
 import { DataItem } from "../../services/db";
@@ -8,15 +8,14 @@ import DraggableColumn from "./DragableColumn";
 import ColumnService, {
   ExtendedCol,
   initialColumns,
+  RawCol,
 } from "../../services/db/Columns";
-
-import _ from "lodash";
 
 function useDraggableColumns() {
   const [columns, setColumns] = useState<ExtendedCol[]>(initialColumns);
   const [dragIndex, setDragIndex] = useState(-1);
 
-  const fetcher = () => {
+  const refresh = () => {
     ColumnService.getAll().then((data) => {
       if (data.length === 0) {
         ColumnService.bulkSave(initialColumns);
@@ -25,9 +24,7 @@ function useDraggableColumns() {
     });
   };
 
-  function formatColumns(
-    rawCols: { field: string; width: number; order: number; visible: boolean }[]
-  ) {
+  function formatColumns(rawCols: RawCol[]) {
     setColumns(
       rawCols
         .sort((a, b) => a.order - b.order)
@@ -38,8 +35,6 @@ function useDraggableColumns() {
         })
     );
   }
-
-  useEffect(() => fetcher(), []);
 
   const moveColumn = useCallback(
     (dragIndex: number, hoverIndex: number) => {
@@ -124,6 +119,7 @@ function useDraggableColumns() {
   return {
     columns: columnsWithDraggableHeaders,
     columnVisibilityModel,
+    refresh,
     reset,
     handleResize,
     handleColumnVisibilityModelChange,
