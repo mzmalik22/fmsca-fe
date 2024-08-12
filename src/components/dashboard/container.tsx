@@ -30,7 +30,7 @@ function getKeysFromLookup(obj: GridFilterState["filteredRowsLookup"]) {
   return keys;
 }
 
-export default function DashboardContainer() {
+function DashboardContainer() {
   const [updateData, setUpdateData] = useState<RawCol[]>([]);
   const [isOpenUpdateDialog, setOpenUpdateDialog] = useState(false);
 
@@ -161,3 +161,5 @@ export default function DashboardContainer() {
     </Box>
   );
 }
+
+export default DashboardContainer;
