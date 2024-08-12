@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import RecordContextProvider from "./context/Record.context";
 import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
+import PivotContainer from "./components/pivot/Container";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -38,7 +39,7 @@ function a11yProps(index: number) {
 }
 
 function App() {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(1);
 
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -61,7 +62,7 @@ function App() {
         <Dashboard />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        Item Two
+        <PivotContainer />
       </CustomTabPanel>
     </RecordContextProvider>
   );

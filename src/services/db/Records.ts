@@ -31,7 +31,21 @@ class RecordService {
     store.clear();
 
     data.forEach(async (item) => {
-      const { id, out_of_service_date, legal_name, ...rest } = item;
+      const {
+        id,
+        created_dt,
+        data_source_modified_dt,
+        legal_name,
+        dba_name,
+        entity_type,
+        operating_status,
+        physical_address,
+        phone,
+        power_units,
+        mc_mx_ff_number,
+        usdot_number,
+        out_of_service_date,
+      } = item;
 
       let d: Date | undefined;
 
@@ -39,9 +53,18 @@ class RecordService {
 
       await store.put({
         id,
+        created_dt,
+        data_source_modified_dt,
         legal_name,
+        dba_name,
+        entity_type,
+        operating_status,
+        physical_address,
+        phone,
+        power_units,
+        mc_mx_ff_number,
+        usdot_number,
         ...(d ? { out_of_service_date: d } : {}),
-        ...rest,
       });
     });
 

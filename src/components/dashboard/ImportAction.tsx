@@ -1,15 +1,21 @@
 import { Upload } from "@mui/icons-material";
-import { Button } from "@mui/material";
+import { Button, ButtonOwnProps } from "@mui/material";
 import { useState } from "react";
 
 import ImportDialog from "./ImportDialog";
 
-function ImportAction() {
+type ImportActionProps = {
+  variant?: ButtonOwnProps["variant"];
+};
+
+function ImportAction(props: ImportActionProps) {
+  const { variant = "text" } = props;
+
   const [isOpen, setOpen] = useState(false);
 
   return (
     <>
-      <Button onClick={() => setOpen(true)}>
+      <Button variant={variant} onClick={() => setOpen(true)}>
         <Upload fontSize="small" />
         &nbsp;Import
       </Button>

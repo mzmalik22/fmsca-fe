@@ -31,12 +31,10 @@ function getKeysFromLookup(obj: GridFilterState["filteredRowsLookup"]) {
 }
 
 export default function DashboardContainer() {
-  const [isLoading, setLoading] = useState(false);
-
   const [updateData, setUpdateData] = useState<RawCol[]>([]);
   const [isOpenUpdateDialog, setOpenUpdateDialog] = useState(false);
 
-  const { records, setRecords } = useRecords();
+  const { isLoading, records } = useRecords();
   const [filteredRecords, setFilteredRecords] = useState<DataItem[]>([]);
 
   useEffect(() => setFilteredRecords(records), [records]);
@@ -68,17 +66,6 @@ export default function DashboardContainer() {
     window.location.replace(window.location.pathname);
   }
   const updateColumns = () => ColumnService.removeAllAndSave(updateData);
-
-  const fetcher = () => {
-    setLoading(true);
-    RecordService.getAll()
-      .then((data) => {
-        if (data.length) setRecords(data);
-      })
-      .finally(() => setLoading(false));
-  };
-
-  useEffect(() => fetcher(), []);
 
   const processRowUpdate = (newRow: DataItem, oldRow: DataItem) => {
     const updatedRow = { ...oldRow, ...newRow };
