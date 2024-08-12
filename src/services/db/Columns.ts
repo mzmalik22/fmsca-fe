@@ -26,7 +26,7 @@ export const initialColumns = [
     type: "dateTime",
     editable: true,
     width: 200,
-    valueGetter: (value) => new Date(value),
+    valueGetter: (value) => (value ? new Date(value) : ""),
     visible: true,
   },
   {
@@ -35,7 +35,7 @@ export const initialColumns = [
     type: "dateTime",
     editable: true,
     width: 200,
-    valueGetter: (value) => new Date(value),
+    valueGetter: (value) => (value ? new Date(value) : ""),
     visible: true,
   },
   {
@@ -102,7 +102,7 @@ export const initialColumns = [
     visible: true,
   },
   {
-    field: "out_of_service_data",
+    field: "out_of_service_date",
     headerName: "Out of service date",
     type: "dateTime",
     valueGetter: (value) => (value ? new Date(value) : ""),

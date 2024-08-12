@@ -11,7 +11,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import useDraggableColumns from "./useDraggableColumns";
 import RecordService from "../../services/db/Records";
-import { DataItem, initialRows } from "../../services/db";
+import { DataItem } from "../../services/db";
 import Toolbar from "./Toolbar";
 import ColumnService, { RawCol } from "../../services/db/Columns";
 import TokenService from "../../services/token";

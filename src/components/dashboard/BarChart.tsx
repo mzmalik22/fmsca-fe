@@ -25,6 +25,14 @@ function BarChart(props: BarChartProps) {
       const monthlyCounts: { [key: string]: number } = {};
 
       data.forEach((company) => {
+        if (!company.out_of_service_date) return;
+
+        console.log(
+          company.id,
+          company.legal_name,
+          company.out_of_service_date
+        );
+
         const date = dayjs(company.out_of_service_date);
         const monthYear = date.format("MMMM YYYY");
 
@@ -83,10 +91,6 @@ function BarChart(props: BarChartProps) {
     };
 
     processChartData();
-  }, [data]);
-
-  useEffect(() => {
-    console.log(data);
   }, [data]);
 
   return (

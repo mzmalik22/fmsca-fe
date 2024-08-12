@@ -43,6 +43,7 @@ function ImportDialog(props: ImportDialogProps) {
               const sheetName = workbook.SheetNames[0];
               const sheet = workbook.Sheets[sheetName];
               const jsonData = XLSX.utils.sheet_to_json(sheet);
+
               resolve(jsonData as DataItem[]);
             } catch (ex) {
               reject(ex);
