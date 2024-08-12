@@ -39,7 +39,7 @@ function a11yProps(index: number) {
 }
 
 function App() {
-  const [value, setValue] = useState(1);
+  const [value, setValue] = useState(0);
 
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
