@@ -39,7 +39,7 @@ function a11yProps(index: number) {
 }
 
 function App() {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(1);
 
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -59,10 +59,10 @@ function App() {
       </Box>
 
       <CustomTabPanel value={value} index={0}>
-        <DashboardContainer />
+        <PivotContainer />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <PivotContainer />
+        <DashboardContainer />
       </CustomTabPanel>
     </RecordContextProvider>
   );
