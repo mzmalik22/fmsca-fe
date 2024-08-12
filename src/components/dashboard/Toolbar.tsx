@@ -7,7 +7,6 @@ import {
 } from "@mui/x-data-grid";
 import ShareMenu from "./ShareMenu";
 import { ExtendedCol } from "../../services/db/Columns";
-import ImportAction from "./ImportAction";
 import ResetAction from "./ResetAction";
 
 type ToolbarProps = {
