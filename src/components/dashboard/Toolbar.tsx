@@ -9,6 +9,7 @@ import {
 import ShareMenu from "./ShareMenu";
 import { ExtendedCol } from "../../services/db/Columns";
 import ImportAction from "./ImportAction";
+import ResetAction from "./ResetAction";
 
 type ToolbarProps = {
   columns: ExtendedCol[];
@@ -45,16 +46,22 @@ function Toolbar(_: ToolbarProps) {
             width: "100%",
             display: "flex",
             alignItems: "center",
-            justifyContent: "flex-start",
+            flexWrap: "wrap",
+            justifyContent: "space-between",
             gap: 2.5,
             padding: "0 10px",
           }}
         >
-          <GridToolbarColumnsButton />
-          <GridToolbarFilterButton />
-          <ImportAction />
-          <GridToolbarExport />
-          <ShareMenu />
+          <Box sx={{ display: "flex", gap: 1 }}>
+            <GridToolbarColumnsButton />
+            <GridToolbarFilterButton />
+            <ImportAction />
+            <GridToolbarExport />
+          </Box>
+          <Box sx={{ display: "flex", gap: 1 }}>
+            <ShareMenu />
+            <ResetAction />
+          </Box>
         </Box>
       </Box>
     </GridToolbarContainer>

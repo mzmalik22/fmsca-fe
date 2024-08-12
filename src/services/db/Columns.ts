@@ -141,6 +141,24 @@ class ColumnService {
     await tx.done;
   }
 
+  public static async removeAllAndReset() {
+    const db = await DB.initDB();
+    const tx = db.transaction(STORES.COLUMNS, "readwrite");
+    const store = tx.objectStore(STORES.COLUMNS);
+
+    store.clear();
+    initialColumns.forEach(async (item, i) => {
+      await store.put({
+        field: item.field,
+        width: item.width,
+        order: i,
+        visible: item.visible,
+      });
+    });
+
+    await tx.done;
+  }
+
   public static async bulkSave(data: ExtendedCol[]) {
     const db = await DB.initDB();
     const tx = db.transaction(STORES.COLUMNS, "readwrite");
