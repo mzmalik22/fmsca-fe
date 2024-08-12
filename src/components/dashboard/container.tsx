@@ -81,7 +81,7 @@ function DashboardContainer() {
 
   const refreshChartData = debounce(
     (records: DataItem[]) => setFilteredRecords(records),
-    1500
+    2000
   );
 
   const handleStateChange = useCallback(

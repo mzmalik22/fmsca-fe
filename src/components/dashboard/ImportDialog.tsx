@@ -67,9 +67,7 @@ function ImportDialog(props: ImportDialogProps) {
   const handleImport: MouseEventHandler<HTMLButtonElement> = () => {
     setLoading(true);
 
-    RecordService.removeAllAndSave(data)
-      .then(() => window.location.reload())
-      .finally(() => setLoading(false));
+    RecordService.removeAllAndSave(data).then(() => window.location.reload());
   };
 
   return (
