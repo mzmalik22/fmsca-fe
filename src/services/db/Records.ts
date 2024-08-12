@@ -37,10 +37,6 @@ class RecordService {
 
       d = serialToDate(out_of_service_date);
 
-      if (legal_name === "DAISY SNOW") {
-        console.log(d, out_of_service_date, item);
-      }
-
       await store.put({
         id,
         legal_name,

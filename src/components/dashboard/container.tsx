@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   DataGrid,
   GridFilterState,
@@ -17,6 +17,8 @@ import ColumnService, { RawCol } from "../../services/db/Columns";
 import TokenService from "../../services/token";
 import UpdateColumnsDialog from "./UpdateColumnsDialog";
 import BarChart from "./BarChart";
+import { useRecords } from "../../context/Record.context";
+import { debounce } from "../../utils";
 
 function getKeysFromLookup(obj: GridFilterState["filteredRowsLookup"]) {
   const keys = [];
@@ -29,13 +31,15 @@ function getKeysFromLookup(obj: GridFilterState["filteredRowsLookup"]) {
 }
 
 export default function DashboardContainer() {
-  const [rows, setRows] = useState<DataItem[]>([]);
   const [isLoading, setLoading] = useState(false);
 
   const [updateData, setUpdateData] = useState<RawCol[]>([]);
   const [isOpenUpdateDialog, setOpenUpdateDialog] = useState(false);
 
-  const filtereRows = useRef<DataItem[]>([]);
+  const { records, setRecords } = useRecords();
+  const [filteredRecords, setFilteredRecords] = useState<DataItem[]>([]);
+
+  useEffect(() => setFilteredRecords(records), [records]);
 
   const apiRef = useGridApiRef();
 
@@ -69,7 +73,7 @@ export default function DashboardContainer() {
     setLoading(true);
     RecordService.getAll()
       .then((data) => {
-        if (data.length) setRows(data);
+        if (data.length) setRecords(data);
       })
       .finally(() => setLoading(false));
   };
@@ -88,18 +92,23 @@ export default function DashboardContainer() {
     console.error(error);
   };
 
+  const refreshChartData = debounce(
+    (records: DataItem[]) => setFilteredRecords(records),
+    1500
+  );
+
   const handleStateChange = useCallback(
     (state: GridState) => {
       const filteredKeys = getKeysFromLookup(state.filter.filteredRowsLookup);
       const rows = filteredKeys.map((key) => apiRef.current.getRow(key));
-      filtereRows.current = rows;
+      refreshChartData(rows);
     },
     [apiRef]
   );
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Card sx={{ height: 500, width: "100%", marginBottom: 5 }}>
+      <Card sx={{ height: 600, width: "100%", marginBottom: 5 }}>
         <DndProvider backend={HTML5Backend}>
           {isLoading ? (
             <Box
@@ -120,10 +129,11 @@ export default function DashboardContainer() {
           ) : (
             <DataGrid
               apiRef={apiRef}
-              rows={rows}
+              rows={records}
               columns={columns}
               pagination
               columnVisibilityModel={columnVisibilityModel}
+              density="compact"
               slots={{
                 toolbar: (...props) => <Toolbar columns={columns} {...props} />,
               }}
@@ -145,7 +155,7 @@ export default function DashboardContainer() {
       </Card>
 
       <Card>
-        <BarChart data={filtereRows.current} />
+        <BarChart data={filteredRecords} />
       </Card>
     </Box>
   );

@@ -10,3 +10,14 @@ export function serialToDate(serial: number | undefined, system = "1900") {
   // Add the days to the base date
   return new Date(baseDate.getTime() + days * 24 * 60 * 60 * 1000);
 }
+
+let timeoutId: number;
+
+export function debounce(cb: Function, delay: number) {
+  return (...args: any) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      cb(...args);
+    }, delay);
+  };
+}

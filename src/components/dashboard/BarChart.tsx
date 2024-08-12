@@ -1,5 +1,4 @@
 import { Box } from "@mui/material";
-import { ApexOptions } from "apexcharts";
 import ReactApexChart from "react-apexcharts";
 import { DataItem } from "../../services/db";
 import { useEffect, useState } from "react";
@@ -12,85 +11,24 @@ type BarChartProps = {
 function BarChart(props: BarChartProps) {
   const { data } = props;
 
-  const [chartData, setChartData] = useState<{
-    series: ApexOptions["series"];
-    options: ApexOptions;
-  }>({
-    series: [],
-    options: {},
-  });
+  const [seriesData, setSeriesData] = useState<number[]>([]);
+  const [labels, setLabels] = useState<string[]>([]);
 
   useEffect(() => {
-    const processChartData = () => {
-      const monthlyCounts: { [key: string]: number } = {};
+    const monthlyCounts: { [key: string]: number } = {};
 
-      data.forEach((company) => {
-        if (!company.out_of_service_date) return;
+    data.forEach((company) => {
+      if (!company.out_of_service_date) return;
 
-        console.log(
-          company.id,
-          company.legal_name,
-          company.out_of_service_date
-        );
+      const date = dayjs(company.out_of_service_date);
+      const monthYear = date.format("MMMM YYYY");
 
-        const date = dayjs(company.out_of_service_date);
-        const monthYear = date.format("MMMM YYYY");
+      if (monthlyCounts[monthYear]) monthlyCounts[monthYear]++;
+      else monthlyCounts[monthYear] = 1;
+    });
 
-        if (monthlyCounts[monthYear]) {
-          monthlyCounts[monthYear]++;
-        } else {
-          monthlyCounts[monthYear] = 1;
-        }
-      });
-
-      const series = [
-        {
-          name: "Companies Out of Service",
-          data: Object.values(monthlyCounts),
-        },
-      ];
-
-      const labels = Object.keys(monthlyCounts);
-
-      setChartData({
-        series: series,
-        options: {
-          chart: {
-            type: "bar",
-            height: 350,
-          },
-          plotOptions: {
-            bar: {
-              horizontal: false,
-              columnWidth: "55%",
-            },
-          },
-          dataLabels: {
-            enabled: false,
-          },
-          stroke: {
-            show: true,
-            width: 2,
-            colors: ["transparent"],
-          },
-          xaxis: {
-            categories: labels,
-          },
-          fill: {
-            opacity: 1,
-          },
-          tooltip: {
-            y: {
-              formatter: function (val) {
-                return val + " companies";
-              },
-            },
-          },
-        },
-      });
-    };
-
-    processChartData();
+    setSeriesData(Object.values(monthlyCounts));
+    setLabels(Object.keys(monthlyCounts));
   }, [data]);
 
   return (
@@ -100,8 +38,45 @@ function BarChart(props: BarChartProps) {
       </Box>
       <Box sx={{ width: "100%" }}>
         <ReactApexChart
-          options={chartData.options}
-          series={chartData.series}
+          series={[
+            {
+              name: "Companies Out of Service",
+              data: seriesData,
+            },
+          ]}
+          options={{
+            chart: {
+              type: "bar",
+              height: 350,
+            },
+            plotOptions: {
+              bar: {
+                horizontal: false,
+                columnWidth: "55%",
+              },
+            },
+            dataLabels: {
+              enabled: false,
+            },
+            stroke: {
+              show: true,
+              width: 2,
+              colors: ["transparent"],
+            },
+            xaxis: {
+              categories: labels,
+            },
+            fill: {
+              opacity: 1,
+            },
+            tooltip: {
+              y: {
+                formatter: function (val) {
+                  return val + " companies";
+                },
+              },
+            },
+          }}
           type="bar"
           height={350}
           width="100%"

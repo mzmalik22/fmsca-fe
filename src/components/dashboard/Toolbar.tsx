@@ -4,7 +4,6 @@ import {
   GridToolbarColumnsButton,
   GridToolbarFilterButton,
   GridToolbarExport,
-  GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import ShareMenu from "./ShareMenu";
 import { ExtendedCol } from "../../services/db/Columns";
@@ -39,7 +38,6 @@ function Toolbar(_: ToolbarProps) {
           }}
         >
           <h2>FMCSA Records</h2>
-          <GridToolbarQuickFilter variant="outlined" size="small" />
         </Box>
         <Box
           sx={{
