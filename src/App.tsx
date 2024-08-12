@@ -53,8 +53,8 @@ function App() {
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Dashboard" {...a11yProps(0)} />
-          <Tab label="Pivot Table" {...a11yProps(1)} />
+          <Tab label="Pivot Table" {...a11yProps(0)} />
+          <Tab label="Dashboard" {...a11yProps(1)} />
         </Tabs>
       </Box>
 
