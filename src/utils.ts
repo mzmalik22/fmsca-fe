@@ -11,7 +11,7 @@ export function serialToDate(serial: number | undefined, system = "1900") {
   return new Date(baseDate.getTime() + days * 24 * 60 * 60 * 1000);
 }
 
-let timeoutId: number;
+let timeoutId: NodeJS.Timeout;
 
 export function debounce(cb: Function, delay: number) {
   return (...args: any) => {
