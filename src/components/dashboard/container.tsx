@@ -94,56 +94,70 @@ export default function DashboardContainer() {
   );
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Card sx={{ height: 600, width: "100%", marginBottom: 5 }}>
-        <DndProvider backend={HTML5Backend}>
-          {isLoading ? (
-            <Box
-              sx={{
-                minHeight: 300,
-                height: "100%",
-                width: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexDirection: "column",
-                gap: "20px",
-              }}
-            >
-              <CircularProgress />
-              <h3>Fetching Records</h3>
-            </Box>
-          ) : (
-            <DataGrid
-              apiRef={apiRef}
-              rows={records}
-              columns={columns}
-              pagination
-              columnVisibilityModel={columnVisibilityModel}
-              density="compact"
-              slots={{
-                toolbar: (...props) => <Toolbar columns={columns} {...props} />,
-              }}
-              processRowUpdate={processRowUpdate}
-              onProcessRowUpdateError={handleProcessRowUpdateError}
-              onColumnResize={handleResize}
-              onColumnVisibilityModelChange={handleColumnVisibilityModelChange}
-              onStateChange={handleStateChange}
-            />
-          )}
-        </DndProvider>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        p: "20px",
+        color: "black",
+      }}
+    >
+      <Box sx={{ width: "100%" }}>
+        <Card sx={{ height: 600, width: "100%", marginBottom: 5 }}>
+          <DndProvider backend={HTML5Backend}>
+            {isLoading ? (
+              <Box
+                sx={{
+                  minHeight: 300,
+                  height: "100%",
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                  gap: "20px",
+                }}
+              >
+                <CircularProgress />
+                <h3>Fetching Records</h3>
+              </Box>
+            ) : (
+              <DataGrid
+                apiRef={apiRef}
+                rows={records}
+                columns={columns}
+                pagination
+                columnVisibilityModel={columnVisibilityModel}
+                density="compact"
+                slots={{
+                  toolbar: (...props) => (
+                    <Toolbar columns={columns} {...props} />
+                  ),
+                }}
+                processRowUpdate={processRowUpdate}
+                onProcessRowUpdateError={handleProcessRowUpdateError}
+                onColumnResize={handleResize}
+                onColumnVisibilityModelChange={
+                  handleColumnVisibilityModelChange
+                }
+                onStateChange={handleStateChange}
+              />
+            )}
+          </DndProvider>
 
-        <UpdateColumnsDialog
-          isOpen={isOpenUpdateDialog}
-          handleClose={() => setOpenUpdateDialog(false)}
-          ignoreUpdate={ignoreUpdate}
-          updateColumns={updateColumns}
-        />
-      </Card>
+          <UpdateColumnsDialog
+            isOpen={isOpenUpdateDialog}
+            handleClose={() => setOpenUpdateDialog(false)}
+            ignoreUpdate={ignoreUpdate}
+            updateColumns={updateColumns}
+          />
+        </Card>
 
-      <Card>
-        <BarChart data={filteredRecords} />
-      </Card>
+        <Card>
+          <BarChart data={filteredRecords} />
+        </Card>
+      </Box>
     </Box>
   );
 }

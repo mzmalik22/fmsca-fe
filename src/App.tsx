@@ -3,11 +3,11 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
-import Dashboard from "./pages/Dashboard";
 import RecordContextProvider from "./context/Record.context";
 import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import PivotContainer from "./components/pivot/Container";
+import DashboardContainer from "./components/dashboard/Container";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -59,7 +59,7 @@ function App() {
       </Box>
 
       <CustomTabPanel value={value} index={0}>
-        <Dashboard />
+        <DashboardContainer />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <PivotContainer />
