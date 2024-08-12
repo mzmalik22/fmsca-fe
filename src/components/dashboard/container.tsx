@@ -70,10 +70,6 @@ export default function DashboardContainer() {
     RecordService.getAll()
       .then((data) => {
         if (data.length) setRows(data);
-        else {
-          RecordService.bulkSave(initialRows);
-          setRows(initialRows);
-        }
       })
       .finally(() => setLoading(false));
   };

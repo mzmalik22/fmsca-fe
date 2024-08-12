@@ -8,6 +8,7 @@ import {
 } from "@mui/x-data-grid";
 import ShareMenu from "./ShareMenu";
 import { ExtendedCol } from "../../services/db/Columns";
+import ImportAction from "./ImportAction";
 
 type ToolbarProps = {
   columns: ExtendedCol[];
@@ -51,6 +52,7 @@ function Toolbar(_: ToolbarProps) {
         >
           <GridToolbarColumnsButton />
           <GridToolbarFilterButton />
+          <ImportAction />
           <GridToolbarExport />
           <ShareMenu />
         </Box>

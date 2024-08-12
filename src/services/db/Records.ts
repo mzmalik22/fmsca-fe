@@ -22,6 +22,21 @@ class RecordService {
     await tx.done;
   }
 
+  public static async removeAllAndSave(data: DataItem[]) {
+    const db = await DB.initDB();
+    const tx = db.transaction(STORES.RECORDS, "readwrite");
+    const store = tx.objectStore(STORES.RECORDS);
+
+    store.clear();
+
+    data.forEach(async (item) => {
+      const { id, ...rest } = item;
+      await store.put({ id, ...rest });
+    });
+
+    await tx.done;
+  }
+
   public static async saveOne(item: DataItem) {
     const db = await DB.initDB();
     const tx = db.transaction(STORES.RECORDS, "readwrite");
