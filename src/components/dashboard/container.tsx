@@ -19,6 +19,7 @@ import UpdateColumnsDialog from "./UpdateColumnsDialog";
 import BarChart from "./BarChart";
 import { useRecords } from "../../context/Record.context";
 import { debounce } from "../../utils";
+import ImportAction from "./ImportAction";
 
 function getKeysFromLookup(obj: GridFilterState["filteredRowsLookup"]) {
   const keys = [];
@@ -103,6 +104,17 @@ function DashboardContainer() {
         color: "black",
       }}
     >
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "flex-end",
+          mb: 1,
+        }}
+      >
+        <ImportAction variant="contained" />
+      </Box>
+
       <Box sx={{ width: "100%" }}>
         <Card sx={{ height: 600, width: "100%", marginBottom: 5 }}>
           <DndProvider backend={HTML5Backend}>

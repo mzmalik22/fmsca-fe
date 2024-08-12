@@ -53,7 +53,6 @@ function Toolbar(_: ToolbarProps) {
           <Box sx={{ display: "flex", gap: 1 }}>
             <GridToolbarColumnsButton />
             <GridToolbarFilterButton />
-            <ImportAction />
             <GridToolbarExport />
           </Box>
           <Box sx={{ display: "flex", gap: 1 }}>
