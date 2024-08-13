@@ -41,6 +41,7 @@ function ShareMenu() {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
+        variant="outlined"
       >
         <Share fontSize="medium" sx={{ pr: 1 }} />
         Share

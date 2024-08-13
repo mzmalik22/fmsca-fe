@@ -55,7 +55,7 @@ function Toolbar(_: ToolbarProps) {
             <GridToolbarExport />
           </Box>
           <Box sx={{ display: "flex", gap: 1 }}>
-            <ShareMenu />
+            {/* <ShareMenu /> */}
             <ResetAction />
           </Box>
         </Box>

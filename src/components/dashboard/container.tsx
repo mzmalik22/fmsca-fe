@@ -20,6 +20,7 @@ import BarChart from "./BarChart";
 import { useRecords } from "../../context/Record.context";
 import { debounce } from "../../utils";
 import ImportAction from "./ImportAction";
+import ShareMenu from "./ShareMenu";
 
 function getKeysFromLookup(obj: GridFilterState["filteredRowsLookup"]) {
   const keys = [];
@@ -110,9 +111,11 @@ function DashboardContainer() {
           display: "flex",
           justifyContent: "flex-end",
           mb: 1,
+          gap: 1,
         }}
       >
         <ImportAction variant="contained" />
+        <ShareMenu />
       </Box>
 
       <Box sx={{ width: "100%" }}>
