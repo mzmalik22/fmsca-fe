@@ -5,7 +5,6 @@ import {
   GridToolbarFilterButton,
   GridToolbarExport,
 } from "@mui/x-data-grid";
-import ShareMenu from "./ShareMenu";
 import { ExtendedCol } from "../../services/db/Columns";
 import ResetAction from "./ResetAction";
 
